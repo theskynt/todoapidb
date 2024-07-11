@@ -14,11 +14,11 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 
-	_ "github.com/mattn/go-sqlite3"
+	_ "modernc.org/sqlite"
 )
 
 func setupTestHandlerDB() *sql.DB {
-	db, err := sql.Open("sqlite3", ":memory:")
+	db, err := sql.Open("sqlite", "file:TestCreateSkillHandlerIT?mode=memory&cache=shared")
 	if err != nil {
 		log.Fatal(err)
 	}
