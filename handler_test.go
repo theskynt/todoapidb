@@ -17,7 +17,7 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-func setupTestDB() *sql.DB {
+func setupTestHandlerDB() *sql.DB {
 	db, err := sql.Open("sqlite3", ":memory:")
 	if err != nil {
 		log.Fatal(err)
@@ -42,7 +42,7 @@ func setupTestDB() *sql.DB {
 var db *sql.DB
 
 func setupRouter() *gin.Engine {
-	db = setupTestDB()
+	db = setupTestHandlerDB()
 	store := NewStorage(db)
 	h := NewHandler(store)
 
@@ -58,7 +58,7 @@ func setupRouter() *gin.Engine {
 	return r
 }
 
-func TestGetTodos(t *testing.T) {
+func TestHandlerGetTodos(t *testing.T) {
 	router := setupRouter()
 
 	req, _ := http.NewRequest("GET", "/api/v1/todos", nil)
@@ -68,7 +68,7 @@ func TestGetTodos(t *testing.T) {
 	assert.Equal(t, http.StatusOK, w.Code)
 }
 
-func TestGetTodo(t *testing.T) {
+func TestHandlerGetTodo(t *testing.T) {
 	router := setupRouter()
 
 	store := NewStorage(db)
@@ -82,7 +82,7 @@ func TestGetTodo(t *testing.T) {
 	assert.Equal(t, http.StatusOK, w.Code)
 }
 
-func TestCreateTodo(t *testing.T) {
+func TestHandlerCreateTodo(t *testing.T) {
 	router := setupRouter()
 
 	todo := Todo{Title: "Test title", Status: "Test status"}
@@ -95,7 +95,7 @@ func TestCreateTodo(t *testing.T) {
 	assert.Equal(t, http.StatusCreated, w.Code)
 }
 
-func TestUpdateTodo(t *testing.T) {
+func TestHandlerUpdateTodo(t *testing.T) {
 	router := setupRouter()
 
 	store := NewStorage(db)
@@ -111,7 +111,7 @@ func TestUpdateTodo(t *testing.T) {
 	assert.Equal(t, http.StatusCreated, w.Code)
 }
 
-func TestDeleteTodo(t *testing.T) {
+func TestHandlerDeleteTodo(t *testing.T) {
 	router := setupRouter()
 
 	store := NewStorage(db)
@@ -124,7 +124,7 @@ func TestDeleteTodo(t *testing.T) {
 	assert.Equal(t, http.StatusCreated, w.Code)
 }
 
-func TestUpdateStatusTodo(t *testing.T) {
+func TestHandlerUpdateStatusTodo(t *testing.T) {
 	router := setupRouter()
 
 	store := NewStorage(db)
@@ -140,7 +140,7 @@ func TestUpdateStatusTodo(t *testing.T) {
 	assert.Equal(t, http.StatusCreated, w.Code)
 }
 
-func TestUpdateTitleTodo(t *testing.T) {
+func TestHandlerUpdateTitleTodo(t *testing.T) {
 	router := setupRouter()
 
 	store := NewStorage(db)
