@@ -39,7 +39,6 @@ func main() {
 		c.HTML(http.StatusOK, "index.html", nil)
 	})
 
-	
 	todoRoute := r.Group("/api/v1/todos")
 	todoRoute.GET(":id", h.GetTodo)
 	todoRoute.GET("", h.GetTodos)
