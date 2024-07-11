@@ -6,8 +6,8 @@ import (
 	"strconv"
 	"testing"
 
-	_ "github.com/mattn/go-sqlite3"
 	"github.com/stretchr/testify/assert"
+	_ "modernc.org/sqlite"
 )
 
 type TodoTest struct {
@@ -17,7 +17,7 @@ type TodoTest struct {
 }
 
 func setupTestDB() *sql.DB {
-	db, err := sql.Open("sqlite3", ":memory:")
+	db, err := sql.Open("sqlite", "file:TestCreateSkillHandlerIT?mode=memory&cache=shared")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -42,7 +42,6 @@ func TestGetAllTodos(t *testing.T) {
 	db := setupTestDB()
 	store := NewStorage(db)
 
-	// เพิ่มข้อมูลตัวอย่าง
 	store.PostTodo("Test title 1", "Test status 1")
 	store.PostTodo("Test title 2", "Test status 2")
 
@@ -114,7 +113,6 @@ func TestDeleteTodo(t *testing.T) {
 	db := setupTestDB()
 	store := NewStorage(db)
 
-	// เพิ่มข้อมูลตัวอย่าง
 	todo, err := store.PostTodo("Test title", "Test status")
 	if err != nil {
 		t.Fatalf("Failed to create todo: %v", err)
@@ -123,7 +121,6 @@ func TestDeleteTodo(t *testing.T) {
 	result := store.DeleteTodo(strconv.Itoa(todo.ID))
 	assert.Equal(t, "succes", result)
 
-	// ตรวจสอบว่า todo ถูกลบไปแล้ว
 	deletedTodo, err := store.GetTodoById(strconv.Itoa(todo.ID))
 	assert.Nil(t, deletedTodo)
 	assert.NotNil(t, err)
@@ -133,7 +130,6 @@ func TestPutStatusTodo(t *testing.T) {
 	db := setupTestDB()
 	store := NewStorage(db)
 
-	// เพิ่มข้อมูลตัวอย่าง
 	todo, err := store.PostTodo("Test title", "Test status")
 	if err != nil {
 		t.Fatalf("Failed to create todo: %v", err)
@@ -151,7 +147,6 @@ func TestPutTitleTodo(t *testing.T) {
 	db := setupTestDB()
 	store := NewStorage(db)
 
-	// เพิ่มข้อมูลตัวอย่าง
 	todo, err := store.PostTodo("Test title", "Test status")
 	if err != nil {
 		t.Fatalf("Failed to create todo: %v", err)
