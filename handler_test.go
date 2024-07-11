@@ -17,7 +17,6 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-// setupTestDB function
 func setupTestDB() *sql.DB {
 	db, err := sql.Open("sqlite3", ":memory:")
 	if err != nil {
@@ -72,8 +71,6 @@ func TestGetTodos(t *testing.T) {
 func TestGetTodo(t *testing.T) {
 	router := setupRouter()
 
-	// เพิ่มข้อมูลตัวอย่าง
-	// db := setupTestDB()
 	store := NewStorage(db)
 	todo, _ := store.PostTodo("Test title", "Test status")
 	fmt.Println(todo.ID)
