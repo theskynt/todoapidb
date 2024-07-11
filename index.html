@@ -20,41 +20,15 @@
   <body>
     <h1>Todo App</h1>
     <form hx-post="/api/v1/todos" hx-ext="json-enc" hx-target="#todo-list">
-      <span>Title:</span>
+      <span>title</span>
       <input type="text" name="title" required />
-      <span>Status:</span>
+      <span>status</span>
       <input type="text" name="status" required />
       <button type="submit">Add Todo</button>
     </form>
-
     <!-- Todo List will be loaded here -->
     <div id="todo-list" hx-get="/api/v1/todos" hx-trigger="load">
       Loading todos...
     </div>
-
-    <template id="tm-todo">
-      <div>
-        <h3>{{title}}</h3>
-        <p>Status: {{status}}</p>
-      </div>
-    </template>
-
-    <script>
-      document.addEventListener("htmx:afterRequest", (event) => {
-        if (event.detail.target.id === "todo-list") {
-          const template = document.getElementById("tm-todo").innerHTML;
-          const todos = event.detail.xhr.response;
-          let todoHTML = "";
-
-          todos.forEach((todo) => {
-            todoHTML += template
-              .replace("{{title}}", todo.title)
-              .replace("{{status}}", todo.status);
-          });
-
-          document.getElementById("todo-list").innerHTML = todoHTML;
-        }
-      });
-    </script>
   </body>
 </html>

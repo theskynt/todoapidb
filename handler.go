@@ -21,7 +21,7 @@ func (h handler) GetTodos(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusCreated, getTodos)
+	c.JSON(http.StatusOK, getTodos)
 }
 
 func (h handler) GetTodo(c *gin.Context) {
@@ -37,7 +37,7 @@ func (h handler) GetTodo(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusCreated, getTodo)
+	c.JSON(http.StatusOK, getTodo)
 }
 
 func (h handler) CreateTodo(c *gin.Context) {
