@@ -34,6 +34,16 @@ func main() {
 	h := NewHandler(s)
 
 	r := gin.Default()
+
+	// config := cors.Config{
+	// 	AllowAllOrigins:  true,
+	// 	AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"},
+	// 	AllowHeaders:     []string{"X-Requested-With", "Authorization", "Origin", "Content-Length", "Content-Type", "TransactionID"},
+	// 	AllowCredentials: false,
+	// 	MaxAge:           12 * time.Hour,
+	// }
+	r.Use(CORSMiddleware())
+
 	r.LoadHTMLGlob("./*.html")
 	r.GET("/", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.html", nil)
@@ -79,4 +89,20 @@ func main() {
 
 	<-idleConnsClosed
 	fmt.Println("Bye!!!")
+}
+
+func CORSMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Header("Access-Control-Allow-Origin", "*")
+		c.Header("Access-Control-Allow-Credentials", "true")
+		c.Header("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
+		c.Header("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT, PATCH, DELETE")
+
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(204)
+			return
+		}
+
+		c.Next()
+	}
 }
